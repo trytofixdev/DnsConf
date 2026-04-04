@@ -24,7 +24,13 @@ public class NextDnsRewriteService {
 
     public Map<String, CreateRewriteDto> buildNewRewrites(List<HostsOverrideListsLoader.BypassRoute> overrides) {
         Map<String, CreateRewriteDto> rewriteDtos = new HashMap<>();
-        overrides.forEach(route -> rewriteDtos.putIfAbsent(route.website(), new CreateRewriteDto(route.website(), route.ip())));
+        overrides.forEach(route -> {
+            String website = route.website();
+            if (website != null && website.toLowerCase().contains("instagram.com")) {
+                return;
+            }
+            rewriteDtos.putIfAbsent(website, new CreateRewriteDto(website, route.ip()));
+        });
         return rewriteDtos;
     }
 
