@@ -23,19 +23,19 @@ public class NextDnsRewriteService {
     private final NextDnsRewriteClient nextDnsRewriteClient;
 
     public Map<String, CreateRewriteDto> buildNewRewrites(List<HostsOverrideListsLoader.BypassRoute> overrides) {
-        Map<String, CreateRewriteDto> rewriteDtos = new HashMap<>();
-        overrides.forEach(route -> {
-            String website = route.website();
-            if (website != null) {
-                String lowerWebsite = website.toLowerCase();
-                if (lowerWebsite.contains("instagram.com") || lowerWebsite.contains("spotify"))  || lowerWebsite.contains("tiktok")) || lowerWebsite.contains("sky")){
-                    return;
-                }
+    Map<String, CreateRewriteDto> rewriteDtos = new HashMap<>();
+    overrides.forEach(route -> {
+        String website = route.website();
+        if (website != null) {
+            String lowerWebsite = website.toLowerCase();
+            if (lowerWebsite.contains("instagram.com") || lowerWebsite.contains("spotify") || lowerWebsite.contains("tiktok") || lowerWebsite.contains("sky")) {
+                return;
             }
-            rewriteDtos.putIfAbsent(website, new CreateRewriteDto(website, route.ip()));
-        });
-        return rewriteDtos;
-    }
+        }
+        rewriteDtos.putIfAbsent(website, new CreateRewriteDto(website, route.ip()));
+    });
+    return rewriteDtos;
+}
 
     public List<CreateRewriteDto> cleanupOutdated(Map<String, CreateRewriteDto> newRewriteRequests) {
         List<RewriteDto> existingRewrites = getExistingRewrites();
